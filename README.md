@@ -14,6 +14,12 @@ relevant bits over to your codebase.
 [Lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html), callbacks,
 and provider chains are the name of the game.
 
+### Avoid afterEvaluate
+
+It introduces subtle ordering issues which can be very challenging to debug.
+
+What you're looking for is probably a [Provider](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html) or [Property](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Property.html) (see also [lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html)).
+
 ## Laziness
 
 ### Don't do expensive computations in the configuration phase
@@ -72,3 +78,21 @@ Sadly, Gradle default is to treat every file input as absolute path sensitive in
 [`@PathSensitive(PathSensitivity.NONE)`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NONE) as that let's Gradle know that you only care about the contents of the file
 and not their location. Other reasonable normalizers are [`PathSensitivity.NAME_ONLY`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NAME_ONLY), [`PathSensitivity.RELATIVE`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#RELATIVE),
 or using [@Classpath](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Classpath.html).
+
+## Plugin public APIs
+
+### Use plugin extensions to define your public API
+
+Instead of using Gradle, system, or Java properties [create Extension objects using extension container](https://docs.gradle.org/current/userguide/custom_plugins.html#sec:getting_input_from_the_build).
+This will allow your users have a robust way of configuring your plugin.
+
+### Don't use Kotlin lambdas in your public API
+
+I know, it's tempting. They're right there. Use [Action<T>](https://docs.gradle.org/current/javadoc/org/gradle/api/Action.html)
+instead. Gradle enhances the bytecode at runtime to provide a nicer DSL experience for users of your
+plugin.
+
+### Don't use lists in your custom extensions
+
+Use [domain object containers](https://docs.gradle.org/current/javadoc/org/gradle/api/model/ObjectFactory.html#domainObjectContainer-java.lang.Class-)
+instead. Once again, Gradle is able to provide enhanced DSL support this way.
