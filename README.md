@@ -20,6 +20,18 @@ It introduces subtle ordering issues which can be very challenging to debug.
 
 What you're looking for is probably a [Provider](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html) or [Property](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Property.html) (see also [lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html)).
 
+### Enable stricter Gradle plugin validation
+
+Use [`ValidatePlugins`](https://docs.gradle.org/current/javadoc/org/gradle/plugin/devel/tasks/ValidatePlugins.html)
+that is added by [`java-gradle-plugin`](https://docs.gradle.org/current/userguide/java_gradle_plugin.html)
+and set
+```
+withType<ValidatePlugins>().configureEach {
+    failOnWarning.set(true)
+    enableStricterValidation.set(true)
+}
+```
+
 ## Laziness
 
 ### Don't do expensive computations in the configuration phase
