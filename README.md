@@ -85,6 +85,11 @@ Sadly, Gradle default is to treat every file input as absolute path sensitive in
 and not their location. Other reasonable normalizers are [`PathSensitivity.NAME_ONLY`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NAME_ONLY), [`PathSensitivity.RELATIVE`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#RELATIVE),
 or using [@Classpath](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Classpath.html).
 
+### Make your tasks outputs deterministic
+
+Consider sorting your inputs in a way that you have deterministic output for the same set of inputs.
+For example, this can come up when doing directory traversal or receiving non-ordered collections.
+
 ## Plugin public APIs (DSL)
 
 ### Use plugin extensions to define your public API
