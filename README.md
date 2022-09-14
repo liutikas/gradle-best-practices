@@ -54,6 +54,12 @@ Sadly, Gradle default is to not to cache any tasks or transforms. Use `@Cacheabl
 than downloading/unpacking it from the cache.
 * input is non-stable (time, git sha, etc) as you will have little to none cache hits.
 
+### Annotate your inputs and outputs
+
+* File inputs should be annotated as [`@InputFile`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputFile.html) or [`@InputFiles`] otherwise Gradle will not keep track on when these files change
+and your task is out of date.
+* Annotate properties that Gradle should not consider in task up to dateness with [`@Internal`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Internal.html)
+
 ### Don't access a `Project` instance inside a task action
 
 It breaks the configuration cache, and will eventually be deprecated. Instead, specify the exact
