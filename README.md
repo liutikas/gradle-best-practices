@@ -65,3 +65,10 @@ It also breaks the experimental project isolation feature, but that won't be tru
 
 Two tasks having the same output file or directly will likely result in constant build cache invalidation.
 Instead set unique outputs for every task, especially when creating per variant/flavor tasks.
+
+### Prefer `@PathSensitive(PathSensitivity.NONE)` for all file inputs
+
+Sadly, Gradle default is to treat every file input as absolute path sensitive input. Instead, use
+[`@PathSensitive(PathSensitivity.NONE)`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NONE) as that let's Gradle know that you only care about the contents of the file
+and not their location. Other reasonable normalizers are [`PathSensitivity.NAME_ONLY`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NAME_ONLY), [`PathSensitivity.RELATIVE`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#RELATIVE),
+or using [@Classpath](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Classpath.html).
