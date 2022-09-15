@@ -119,3 +119,7 @@ plugin.
 
 Use [domain object containers](https://docs.gradle.org/current/javadoc/org/gradle/api/model/ObjectFactory.html#domainObjectContainer-java.lang.Class-)
 instead. Once again, Gradle is able to provide enhanced DSL support this way.
+
+## Credits
+
+- [autonomousapps](https://github.com/autonomousapps) via [Tony's rules for Gradle Plugin Authors](https://dev.to/autonomousapps/tonys-rules-for-gradle-plugin-authors-28k3)
