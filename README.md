@@ -2,6 +2,11 @@
 
 ## General
 
+### Use the latest Gradle and plugin versions
+
+Allows you to get all performance and feature improvements. You can set up [shadows jobs](https://slack.engineering/shadow-jobs/)
+to help test agaist upcoming future versions and catch any regressions in advance.
+
 ### Don't use internal APIs
 
 Gradle and many plugins (such as AGP) consider internal APIs fair game for making breaking changes
@@ -19,6 +24,27 @@ and provider chains are the name of the game.
 It introduces subtle ordering issues which can be very challenging to debug.
 
 What you're looking for is probably a [`Provider`](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html) or [`Property`](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Property.html) (see also [lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html)).
+
+### Create custom tasks
+
+[Gradle documentation suggests to use generic tasks](https://docs.gradle.org/current/userguide/tutorial_using_tasks.html)
+with [`doFirst`](https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#doFirst-org.gradle.api.Action-) or [`doLast`]( https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#doLast-org.gradle.api.Action-)
+to do the work in - **DON'T!**. Even for simple tasks it is much better to create a custom task class as it let's you
+specify inputs, outputs, and most importantly cacheability of the task (see [cacheability section](#make-all-tasks-and-transforms-cacheable-with-some-exceptions)).
+
+```
+abstract class MyTask: DefaultTask() {
+    @get:InputFiles
+    abstract val thingsToRead: ConfigurableFileCollection
+    @get:OuputFile
+    abstract val placeToWrite: RegularFileProperty
+    @TaskAction
+    fun doThings() = TODO()
+}
+```
+
+Note, that making task and input/output properties abstract, Gradle will automatically initialize them for you without having to call
+`project.objects` factory methods.
 
 ### Enable stricter Gradle plugin validation
 
