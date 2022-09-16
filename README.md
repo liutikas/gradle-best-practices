@@ -127,6 +127,11 @@ or using [`@Classpath`](https://docs.gradle.org/current/javadoc/org/gradle/api/t
 Consider sorting your inputs in a way that you have deterministic output for the same set of inputs.
 For example, this can come up when doing directory traversal or receiving non-ordered collections.
 
+### Do not use [`task.outputs.upToDateWhen`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskOutputs.html#upToDateWhen-org.gradle.api.specs.Spec-)
+
+This API predates proper Gradle input/output handling, [use annotations instead](##annotate-your-inputs-and-outputs). The only reasoanble
+usage of this API is `task.outputs.upToDateWhen { false }` for tasks that should always re-run, but ideally you have very few of those.
+
 ## Plugin public APIs (DSL)
 
 ### Use plugin extensions to define your public API
