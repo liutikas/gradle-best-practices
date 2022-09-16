@@ -5,7 +5,7 @@
 ### Use the latest Gradle and plugin versions
 
 Allows you to get all performance and feature improvements. You can set up [shadows jobs](https://slack.engineering/shadow-jobs/)
-to help test agaist upcoming future versions and catch any regressions in advance.
+to help test agaist upcoming versions and catch any regressions in advance.
 
 ### Don't use internal APIs
 
