@@ -18,7 +18,7 @@ and provider chains are the name of the game.
 
 It introduces subtle ordering issues which can be very challenging to debug.
 
-What you're looking for is probably a [Provider](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html) or [Property](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Property.html) (see also [lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html)).
+What you're looking for is probably a [`Provider`](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html) or [`Property`](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Property.html) (see also [lazy configuration](https://docs.gradle.org/current/userguide/lazy_configuration.html)).
 
 ### Enable stricter Gradle plugin validation
 
@@ -26,7 +26,7 @@ Use [`ValidatePlugins`](https://docs.gradle.org/current/javadoc/org/gradle/plugi
 that is added by [`java-gradle-plugin`](https://docs.gradle.org/current/userguide/java_gradle_plugin.html)
 and set
 ```
-withType<ValidatePlugins>().configureEach {
+tasks.withType<ValidatePlugins>().configureEach {
     failOnWarning.set(true)
     enableStricterValidation.set(true)
 }
@@ -40,21 +40,20 @@ It slows down the build. Such computations should be encapsulated in a task acti
 
 ### Avoid the [`create`](https://docs.gradle.org/current/javadoc/org/gradle/api/NamedDomainObjectContainer.html#create-java.lang.String-org.gradle.api.Action-) method on Gradle's container types
 
-Use [register](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskContainer.html#register-java.lang.String-java.lang.Class-org.gradle.api.Action-) instead.
+Use [`register`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskContainer.html#register-java.lang.String-java.lang.Class-org.gradle.api.Action-) instead.
 
 ### Avoid the [`all`](https://docs.gradle.org/current/javadoc/org/gradle/api/DomainObjectCollection.html#all-org.gradle.api.Action-) callback on Gradle's container types
 
-These cause object to be intialized eagerly. Use configureEach instead.
+These cause object to be intialized eagerly. Use `configureEach` instead.
 
 ### Don't assume your plugin is applied after another
 
-Apply order can be arbitary, instead use pluginManager.withPlugin() to reach
-when plugins are added.
+Apply order can be arbitary, instead use [`pluginManager.withPlugin()`](https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/PluginManager.html#withPlugin-java.lang.String-org.gradle.api.Action-) to reach when plugins are added.
 
 ### Don't call `get()` on a `Provider` outside a task action
 
-The whole point of using a provider is to evaluate it as late as possible. Calling `get()`—evaluating
-it—will lead to painful ordering issues if done too early. Instead, use map or flatMap.
+The whole point of using a provider is to evaluate it as late as possible. Calling [`get()`](https://docs.gradle.org/current/javadoc/org/gradle/api/provider/Provider.html#get--) — evaluating
+it — will lead to painful ordering issues if done too early. Instead, use map or flatMap.
 
 ## Cacheability
 
@@ -68,16 +67,16 @@ than downloading/unpacking it from the cache.
 
 ### Annotate your inputs and outputs
 
-* File inputs should be annotated as [`@InputFile`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputFile.html) or [`@InputFiles`] otherwise Gradle will not keep track on when these files change
+* File inputs should be annotated as [`@InputFile`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputFile.html) or [`@InputFiles`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputFiles.html) otherwise Gradle will not keep track on when these files change
 and your task is out of date.
 * Annotate properties that Gradle should not consider in task up to dateness with [`@Internal`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Internal.html)
 
 ### Don't access a `Project` instance inside a task action
 
 It breaks the configuration cache, and will eventually be deprecated. Instead, specify the exact
-inputs you were using `Project` instance for as an explicit task input.
+inputs you were using [`Project`](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html) instance for as an explicit task input.
 
-### Don't access another project's Project instance
+### Don't access another project's `Project` instance
 
 This is called cross-project configuration and is extremely fragile. It creates implicit, nearly
 un-modelable dependencies between projects and can only lead to grief. Instead, share artifacts
@@ -95,7 +94,7 @@ Instead set unique outputs for every task, especially when creating per variant/
 Sadly, Gradle default is to treat every file input as absolute path sensitive input. Instead, use
 [`@PathSensitive(PathSensitivity.NONE)`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NONE) as that let's Gradle know that you only care about the contents of the file
 and not their location. Other reasonable normalizers are [`PathSensitivity.NAME_ONLY`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#NAME_ONLY), [`PathSensitivity.RELATIVE`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitivity.html#RELATIVE),
-or using [@Classpath](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Classpath.html).
+or using [`@Classpath`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Classpath.html).
 
 ### Make your tasks outputs deterministic
 
@@ -111,7 +110,7 @@ This will allow your users have a robust way of configuring your plugin.
 
 ### Don't use Kotlin lambdas in your public API
 
-I know, it's tempting. They're right there. Use [Action<T>](https://docs.gradle.org/current/javadoc/org/gradle/api/Action.html)
+I know, it's tempting. They're right there. Use [`Action<T>`](https://docs.gradle.org/current/javadoc/org/gradle/api/Action.html)
 instead. Gradle enhances the bytecode at runtime to provide a nicer DSL experience for users of your
 plugin.
 
