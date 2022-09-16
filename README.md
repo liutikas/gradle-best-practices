@@ -32,7 +32,7 @@ with [`doFirst`](https://docs.gradle.org/current/javadoc/org/gradle/api/Task.htm
 to do the work in - **DON'T!**. Even for simple tasks it is much better to create a custom task class as it let's you
 specify inputs, outputs, and most importantly cacheability of the task (see [cacheability section](#make-all-tasks-and-transforms-cacheable-with-some-exceptions)).
 
-```
+```kotlin
 abstract class MyTask: DefaultTask() {
     @get:InputFiles
     abstract val thingsToRead: ConfigurableFileCollection
@@ -51,7 +51,7 @@ Note, that making task and input/output properties abstract, Gradle will automat
 Use [`ValidatePlugins`](https://docs.gradle.org/current/javadoc/org/gradle/plugin/devel/tasks/ValidatePlugins.html)
 that is added by [`java-gradle-plugin`](https://docs.gradle.org/current/userguide/java_gradle_plugin.html)
 and set
-```
+```kotlin
 tasks.withType<ValidatePlugins>().configureEach {
     failOnWarning.set(true)
     enableStricterValidation.set(true)
