@@ -58,6 +58,24 @@ tasks.withType<ValidatePlugins>().configureEach {
 }
 ```
 
+## Dependencies
+
+### Keep your dependencies clustered
+
+Having `dependencies {}` block with the dependencies clustered by destination (main, test, androidTest, etc.) makes it easier for
+others to see what's on the classpath and how it should be changed.
+
+### Use appropriate configurations for dependencies
+
+Prefer `implementation` over `api`. Add dependencies in places you use it instead of adding to all projects or configurations just in case.
+Use [`dependency-analysis-android-gradle-plugin`](https://github.com/autonomousapps/dependency-analysis-android-gradle-plugin) to help
+maintain clean dependency lists.
+
+### Use [version catalogs](https://docs.gradle.org/current/userguide/platforms.html) for shared dependencies
+
+Avoids having to change dozens of lines when you want to upgrade a version of a library. Reduced variation between versions used in
+the projects can also help have more accurate test coverage.
+
 ## Laziness
 
 ### Don't do expensive computations in the configuration phase
