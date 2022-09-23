@@ -168,6 +168,16 @@ plugin.
 Use [domain object containers](https://docs.gradle.org/current/javadoc/org/gradle/api/model/ObjectFactory.html#domainObjectContainer-java.lang.Class-)
 instead. Once again, Gradle is able to provide enhanced DSL support this way.
 
+## Testing
+
+### Run your integration tests with `--warning-mode=fail`
+
+Making all [warnings](https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_warnings) fail the builds under test by passing `--warning-mode=fail` to all your integration tests make sure your plugins don't use any deprecated Gradle features.
+It prevents you and contributors from inadvertently introducing such usages.
+Moreover, when you add a new Gradle version to your testing matrix you get direct feedback on what needs attention.
+
+In the event you need to relax this for some test, do it granularly until you can resolve the problem.
+
 ## Credits
 
 - [autonomousapps](https://github.com/autonomousapps) via [Tony's rules for Gradle Plugin Authors](https://dev.to/autonomousapps/tonys-rules-for-gradle-plugin-authors-28k3)
