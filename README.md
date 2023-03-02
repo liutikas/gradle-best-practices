@@ -5,7 +5,7 @@
 ### Use the latest Gradle and plugin versions
 
 Allows you to get all performance and feature improvements. You can set up [shadows jobs](https://slack.engineering/shadow-jobs/)
-to help test agaist upcoming versions and catch any regressions in advance.
+to help test against upcoming versions and catch any regressions in advance.
 
 ### Don't use internal APIs
 
@@ -29,7 +29,7 @@ What you're looking for is probably a [`Provider`](https://docs.gradle.org/curre
 
 [Gradle documentation suggests to use generic tasks](https://docs.gradle.org/current/userguide/tutorial_using_tasks.html)
 with [`doFirst`](https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#doFirst-org.gradle.api.Action-) or [`doLast`]( https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#doLast-org.gradle.api.Action-)
-to do the work in - **DON'T!**. Even for simple tasks it is much better to create a custom task class as it let's you
+to do the work in - **DON'T!**. Even for simple tasks it is much better to create a custom task class as it lets you
 specify inputs, outputs, and most importantly cacheability of the task (see [cacheability section](#make-all-tasks-and-transforms-cacheable-with-some-exceptions)).
 
 ```kotlin
@@ -88,11 +88,11 @@ Use [`register`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/Ta
 
 ### Avoid the [`all`](https://docs.gradle.org/current/javadoc/org/gradle/api/DomainObjectCollection.html#all-org.gradle.api.Action-) callback on Gradle's container types
 
-These cause object to be intialized eagerly. Use `configureEach` instead.
+These cause object to be initialized eagerly. Use `configureEach` instead.
 
 ### Don't assume your plugin is applied after another
 
-Apply order can be arbitary, instead use [`pluginManager.withPlugin()`](https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/PluginManager.html#withPlugin-java.lang.String-org.gradle.api.Action-) to reach when plugins are added.
+Apply order can be arbitrary, instead use [`pluginManager.withPlugin()`](https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/PluginManager.html#withPlugin-java.lang.String-org.gradle.api.Action-) to reach when plugins are added.
 
 ### Don't call `get()` on a `Provider` outside a task action
 
@@ -103,11 +103,11 @@ it — will lead to painful ordering issues if done too early. Instead, use map 
 
 ### Make all tasks and transforms cacheable (with some exceptions)
 
-Sadly, Gradle default is to not to cache any tasks or transforms. Use `@CacheableTask` and
+Sadly, Gradle default is to not cache any tasks or transforms. Use `@CacheableTask` and
 `@CacheableTransform`. The exceptions are:
 * copy/package(jar/zip)/unpackage(extract) since generally it is faster to rerun this task locally
 than downloading/unpacking it from the cache.
-* input is non-stable (time, git sha, etc) as you will have little to none cache hits.
+* input is non-stable (time, git sha, etc.) as you will have little to none cache hits.
 
 ### Annotate your inputs and outputs
 
@@ -176,7 +176,7 @@ Making all [warnings](https://docs.gradle.org/current/userguide/command_line_int
 It prevents you and contributors from inadvertently introducing such usages.
 Moreover, when you add a new Gradle version to your testing matrix you get direct feedback on what needs attention.
 
-In the event you need to relax this for some test, do it granularly until you can resolve the problem.
+In the event you need to relax this for some test, do it gradually until you can resolve the problem.
 
 ## Credits
 
